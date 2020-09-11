@@ -1,25 +1,25 @@
+/* The following program computes the upper and lower cumulative distribution functions for the standard normal
+ * distribution at x = 2. */
 #include <stdio.h>
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
+#include <gsl/gsl_cdf.h>
 
 int main (void)
 {
-    int i;
-    double x = 0, y = 0, dx, dy;
 
-    gsl_rng * r;
-    gsl_rng_env_setup();
-    const gsl_rng_type *T = gsl_rng_default;
-    r = gsl_rng_alloc(T);
+   double P, Q;
+   double x = 2.0;
 
-    printf ("%g %g\n", x, y);
+   P = gsl_cdf_ugaussian_P (x);
+   printf ("prob(x < %f) = %f\n", x, P);
 
-    for (i = 0; i < 10; i++) {
-        gsl_ran_dir_2d (r, &dx, &dy);
-        x += dx; y += dy;
-        printf ("%g %g\n", x, y);
-    }
+   Q = gsl_cdf_ugaussian_Q (x);
+   printf ("prob(x > %f) = %f\n", x, Q);
 
-    gsl_rng_free (r);
-    return 0;
+   x = gsl_cdf_ugaussian_Pinv (P);
+   printf ("Pinv(%f) = %f\n", P, x);
+
+   x = gsl_cdf_ugaussian_Qinv (Q);
+   printf ("Qinv(%f) = %f\n", Q, x);
+
+   return 0;
 }

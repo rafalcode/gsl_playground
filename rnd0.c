@@ -5,7 +5,7 @@
 int main (void)
 {
     const gsl_rng_type * T;
-    unsigned int k;
+    unsigned int ret;
     gsl_rng * r;
     int i, n = 10;
     double mu = 3.0;
@@ -17,8 +17,8 @@ int main (void)
 
     /* print n random variates chosen from the poisson distribution with mean parameter mu */
     for (i = 0; i < n; i++) {
-        k = gsl_ran_poisson (r, mu);
-        printf (" %u", k);
+        ret = gsl_ran_poisson (r, mu); // many randists return a double, but poisson returns an int.
+        printf (" %u", ret);
     }
     printf ("\n");
     gsl_rng_free (r);

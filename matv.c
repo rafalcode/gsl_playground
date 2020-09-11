@@ -2,8 +2,9 @@
 #include <math.h>
 #include <stdio.h>
 #include <gsl/gsl_matrix.h>
-// #include <gsl/gsl_blas.h>
-#include <goto/cblas.h>
+#include <gsl/gsl_blas.h>
+// #include <gsl/gsl_cblas.h>
+// #include <goto/cblas.h>
 
 int main (void)
 {

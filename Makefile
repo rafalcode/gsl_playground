@@ -4,10 +4,11 @@ CC=gcc
 FLAGS=-Wall -g
 INCDIRS=/usr/local/include
 LIBDIRS=/usr/local/lib
+LIBSYMBS0=-lgsl -lm
 LIBSYMBS=-lgsl -latlas -lcblas -lm
 LIBSYMBS1=-lgsl -lgoto2 -lgfortran -lm
 LIBSYMBS2=-lgsl -lgslcblas -lm
-EXES= allperms rnperm matv vecv2 comb1 comb2 p0 p1 p2 ms1 ms2 qrex p0a
+EXES= allperms rnperm matv vecv2 comb1 comb2 p0 p1 p2 ms1 ms2 qrex p0a rnd0
 
 allperms: allperms.c
 	$(CC) $(FLAGS) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) $(LIBSYMBS)
@@ -18,7 +19,8 @@ rnperm: rnperm.c
 
 # Used to be called vecv.c, but it's really about matrix views, so changed.
 matv: matv.c
-	$(CC) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) $(LIBSYMBS1)
+	$(CC) -o $@ $^ $(LIBSYMBS2)
+# 	$(CC) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) $(LIBSYMBS1)
 
 vecv2: vecv2.c
 	$(CC) $(FLAGS) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) $(LIBSYMBS)
@@ -70,6 +72,11 @@ ms2: ms2.c
 
 qrex: qrex.c
 	$(CC) $(FLAGS) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) -L${LL} $(LIBSYMBS)
+
+# random number distirubtion practice
+rnd0: rnd0.c
+	$(CC) -o $@ $^ $(LIBSYMBS2)
+	# $(CC) $(FLAGS) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) -L${LL} $(LIBSYMBS)
 
 .PHONY: clean
 

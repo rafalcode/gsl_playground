@@ -1,0 +1,134 @@
+     #include <stdio.h>
+     #include <gsl/gsl_rng.h>
+     #include <gsl/gsl_randist.h>
+
+     int
+     main (void)
+     {
+       const gsl_rng_type * T;
+       gsl_rng * r;
+
+         int i, n = 10;
+         double mu = 3.0;
+
+         /* create a generator chosen by the
+            environment variable GSL_RNG_TYPE */
+
+         gsl_rng_env_setup();
+
+         T = gsl_rng_default;
+         r = gsl_rng_alloc (T);
+
+         /* print n random variates chosen from
+            the poisson distribution with mean
+            parameter mu */
+
+         for (i = 0; i < n; i++)
+           {
+             unsigned int k = gsl_ran_poisson (r, mu);
+             printf (" %u", k);
+           }
+
+         printf ("\n");
+         gsl_rng_free (r);
+         return 0;
+     }
+Chapter 19: Random Number Distributions                                                246
+
+
+
+If the library and header ﬁles are installed under ‘/usr/local’ (the default location) then
+the program can be compiled with these options,
+      $ gcc -Wall demo.c -lgsl -lgslcblas -lm
+Here is the output of the program,
+      $ ./a.out
+       2 5 5 2 1 0 3 4 1 1
+The variates depend on the seed used by the generator. The seed for the default generator
+type gsl_rng_default can be changed with the GSL_RNG_SEED environment variable to
+produce a diﬀerent stream of variates,
+      $ GSL_RNG_SEED=123 ./a.out
+      GSL_RNG_SEED=123
+       4 5 6 3 3 1 4 2 5 5
+The following program generates a random walk in two dimensions.
+      #include <stdio.h>
+      #include <gsl/gsl_rng.h>
+      #include <gsl/gsl_randist.h>
+
+      int
+      main (void)
+      {
+        int i;
+        double x = 0, y = 0, dx, dy;
+
+          const gsl_rng_type * T;
+          gsl_rng * r;
+
+          gsl_rng_env_setup();
+          T = gsl_rng_default;
+          r = gsl_rng_alloc (T);
+
+          printf ("%g %g\n", x, y);
+
+          for (i = 0; i < 10; i++)
+            {
+              gsl_ran_dir_2d (r, &dx, &dy);
+              x += dx; y += dy;
+              printf ("%g %g\n", x, y);
+            }
+
+          gsl_rng_free (r);
+          return 0;
+      }
+Here is the output from the program, three 10-step random walks from the origin,
+Chapter 19: Random Number Distributions                                             247
+
+                                     Random walk
+                      5
+                      4
+                      3
+                      2
+                      1
+               p(k)
+
+                      0
+                      -1
+                      -2
+                      -3
+                      -4
+                      -5
+                           -5 -4 -3 -2 -1   0   1   2   3   4   5
+                                            k
+    The following program computes the upper and lower cumulative distribution functions
+for the standard normal distribution at x = 2.
+      #include <stdio.h>
+      #include <gsl/gsl_cdf.h>
+
+     int
+     main (void)
+     {
+       double P, Q;
+       double x = 2.0;
+
+        P = gsl_cdf_ugaussian_P (x);
+        printf ("prob(x < %f) = %f\n", x, P);
+
+        Q = gsl_cdf_ugaussian_Q (x);
+        printf ("prob(x > %f) = %f\n", x, Q);
+
+        x = gsl_cdf_ugaussian_Pinv (P);
+        printf ("Pinv(%f) = %f\n", P, x);
+
+        x = gsl_cdf_ugaussian_Qinv (Q);
+        printf ("Qinv(%f) = %f\n", Q, x);
+
+         return 0;
+      }
+Here is the output of the program,
+      prob(x < 2.000000) = 0.977250
+      prob(x > 2.000000) = 0.022750
+      Pinv(0.977250) = 2.000000
+Chapter 19: Random Number Distributions                                               248
+
+
+
+     Qinv(0.022750) = 2.000000

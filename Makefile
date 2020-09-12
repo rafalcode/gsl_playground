@@ -8,7 +8,7 @@ LIBSYMBS0=-lgsl -lm
 LIBSYMBS=-lgsl -latlas -lcblas -lm
 LIBSYMBS1=-lgsl -lgoto2 -lgfortran -lm
 LIBSYMBS2=-lgsl -lgslcblas -lm
-EXES= allperms rnperm matv vecv2 comb1 comb2 p0 p1 p2 ms1 ms2 qrex p0a rnd0
+EXES= allperms rnperm matv vecv2 comb1 comb2 p0 p1 p2 ms1 ms2 qrex p0a rnd0 rnd1 rnd2 rnd3 pdf3 pdf3a
 
 allperms: allperms.c
 	$(CC) $(FLAGS) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) $(LIBSYMBS)
@@ -76,7 +76,19 @@ qrex: qrex.c
 # random number distirubtion practice
 rnd0: rnd0.c
 	$(CC) -o $@ $^ $(LIBSYMBS2)
-	# $(CC) $(FLAGS) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) -L${LL} $(LIBSYMBS)
+rnd1: rnd1.c
+	$(CC) -o $@ $^ $(LIBSYMBS2)
+rnd2: rnd2.c
+	$(CC) -o $@ $^ $(LIBSYMBS2)
+rnd3: rnd3.c
+	$(CC) -o $@ $^ $(LIBSYMBS2)
+pdf3: pdf3.c
+	$(CC) -o $@ $^ $(LIBSYMBS2)
+pdf3a: pdf3a.c
+	$(CC) -o $@ $^ $(LIBSYMBS2)
+
+
+.PHONY: clean
 
 .PHONY: clean
 
